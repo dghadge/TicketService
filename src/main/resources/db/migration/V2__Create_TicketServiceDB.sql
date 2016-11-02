@@ -3,8 +3,8 @@ create table if not exists seats(
 	rowNumber       int  not null, 
 	seatNumber      int  not null,
 	description     varchar(200) not null,  
-	seatHoldId      int auto_increment,        //FK to seathold. Serves dual purpose of Hold & Confirmation ID
-	status          int not null default 0,    //0=Available, 1=OnHold, 2=Reserved
+	seatHoldId      int not null default 0,  //FK to seathold. Serves dual purpose of Hold & Confirmation ID
+	status          int not null default 0,  //0=Available, 1=OnHold, 2=Reserved
 	lastHeldTime    timestamp default CURRENT_TIMESTAMP
 );
 
