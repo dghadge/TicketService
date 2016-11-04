@@ -22,6 +22,7 @@ public class DbConfiguration {
 		return DataSourceBuilder.create().build();
 	}
 	
+	//If permissions are restricted on primary DataSource - use secondary datasource
 	@Bean
 	@ConfigurationProperties(prefix="flyway.datasource")
 	@FlywayDataSource

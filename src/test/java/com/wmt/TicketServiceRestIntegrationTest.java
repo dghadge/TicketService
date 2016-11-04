@@ -1,0 +1,76 @@
+package com.wmt;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.web.client.RestTemplate;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
+
+public class TicketServiceRestIntegrationTest {
+	
+	@Test
+	public void testURISeats() throws IOException {
+		RestTemplate restTemplate = new RestTemplate();
+		ResponseEntity<String> response = restTemplate.getForEntity(
+				"http://localhost:8090/seats", String.class);
+
+		assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
+	}
+	
+	@Test
+	public void testURIHold() throws IOException {
+		RestTemplate restTemplate = new RestTemplate();
+		
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("numSeats", "1");
+		params.put("customerEmail", "test@wmt.com");
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Accept", "application/json");
+
+		HttpEntity entity = new HttpEntity(headers);
+
+		ResponseEntity<String> response = 
+				restTemplate.exchange("http://localhost:8090/hold?numSeats={numSeats}&customerEmail={customerEmail}", 
+				HttpMethod.PUT, entity, String.class, params);		
+		
+		assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
+	}
+	
+	@Test
+	public void testURIReserve() throws IOException {
+		RestTemplate restTemplate = new RestTemplate();
+		
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("seatHoldId", "1");
+		params.put("customerEmail", "test@wmt.com");
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Accept", "application/json");
+
+		HttpEntity entity = new HttpEntity(headers);
+
+		ResponseEntity<String> response = 
+				restTemplate.exchange("http://localhost:8090/reserve?seatHoldId={seatHoldId}&customerEmail={customerEmail}", 
+				HttpMethod.PUT, entity, String.class, params);		
+		
+		assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
+	}
+
+}

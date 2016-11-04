@@ -35,11 +35,11 @@ public class SeatHoldDAOImpl implements SeatHoldDAO {
 	@Override
 	public SeatHold findAndHoldSeats(int numSeats, final String customerEmail) {
 
-		// Sequence-1 : Find available seats
+		// Sequence-1 : Find available seats or expired on-hold seats
 		String sqlSelect = "select seatid, rownumber, seatnumber, description from seats "
-				+ "where ((DATEDIFF('second',lastheldtime ,  CURRENT_TIMESTAMP())-900 >0) "
-				+ "AND status in (0,1)) order by rownumber, seatnumber limit ?";
-
+				+ "where status=0 OR ((DATEDIFF('second',lastheldtime ,  CURRENT_TIMESTAMP())-900 >0) "
+				+ "AND status = 1) order by rownumber, seatnumber limit ?";
+		
 		List<Seats> seats = this.jdbcTemplate.query(sqlSelect,
 				new Object[] { numSeats }, new RowMapper<Seats>() {
 					public Seats mapRow(ResultSet rs, int rowNum)
@@ -57,7 +57,7 @@ public class SeatHoldDAOImpl implements SeatHoldDAO {
 		String sqlInsertSeatHold = "insert into seathold(email) values(?)";
 		this.jdbcTemplate.update(sqlInsertSeatHold, customerEmail);
 
-		// Sequence-3 : Find seatHoldId for the customer
+		// Sequence-3 : Find seatHoldId for the customer //TODO
 		String sqlSelectSeatHold = "select max(seatholdid) from seathold where email=?";
 		Long seatHoldId = this.jdbcTemplate.queryForObject(sqlSelectSeatHold,
 				new Object[] { customerEmail }, Long.class);
@@ -76,8 +76,7 @@ public class SeatHoldDAOImpl implements SeatHoldDAO {
 	@Transactional
 	@Override
 	public int reserveSeats(int seatHoldId, String customerEmail) {
-		String sql = "update seats set status=2 where (( DATEDIFF('second',lastheldtime, CURRENT_TIMESTAMP())-900 <0) AND status in (0,1)) AND seatholdId=?";
-
+		String sql = "update seats set status=2 where (DATEDIFF('second',lastheldtime, CURRENT_TIMESTAMP())-900 <0) AND status = 1 AND seatholdId=?";
 		this.jdbcTemplate.update(sql, seatHoldId);
 		return seatHoldId;
 	}
