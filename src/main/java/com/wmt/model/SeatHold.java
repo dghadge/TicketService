@@ -2,24 +2,16 @@ package com.wmt.model;
 
 import java.util.List;
 
-/*import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-*/
-//@Entity
 public class SeatHold {
 
-	//@Id
-	//@GeneratedValue(strategy = GenerationType.AUTO)
-	Long seatHoldId; 
+	Long seatHoldId;
 
 	String email;
 	List<Seats> seats;
 
+	public SeatHold() {
+	}
 
-	public SeatHold() { }
-	
 	public SeatHold(Long seatHoldId, String email, List<Seats> seats) {
 		this.seatHoldId = seatHoldId;
 		this.email = email;
@@ -46,7 +38,7 @@ public class SeatHold {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}	
+	}
 
 	public List<Seats> getSeats() {
 		return seats;

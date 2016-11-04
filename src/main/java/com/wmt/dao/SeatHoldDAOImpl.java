@@ -1,21 +1,17 @@
 package com.wmt.dao;
 
-/*import java.sql.PreparedStatement;
- import java.sql.ResultSet;
- import java.sql.SQLException;*/
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-
-import com.wmt.model.SeatHold;
-import com.wmt.model.Seats;
 
 import javax.sql.DataSource;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.wmt.model.SeatHold;
+import com.wmt.model.Seats;
 
 public class SeatHoldDAOImpl implements SeatHoldDAO {
 
@@ -77,7 +73,8 @@ public class SeatHoldDAOImpl implements SeatHoldDAO {
 	@Override
 	public int reserveSeats(int seatHoldId, String customerEmail) {
 		String sql = "update seats set status=2 where (DATEDIFF('second',lastheldtime, CURRENT_TIMESTAMP())-900 <0) AND status = 1 AND seatholdId=?";
-		this.jdbcTemplate.update(sql, seatHoldId);
+		int rows = this.jdbcTemplate.update(sql, seatHoldId);
+		if (rows<=0) seatHoldId=-1;
 		return seatHoldId;
 	}
 

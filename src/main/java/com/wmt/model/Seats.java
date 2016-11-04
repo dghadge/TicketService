@@ -1,22 +1,13 @@
 package com.wmt.model;
-/*
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-*/
-//@Entity
-public class Seats {
-	//@Id
-	//@GeneratedValue(strategy = GenerationType.AUTO)
-	Long seatId; 
-	Integer rowNumber; 
-	Integer seatNumber;
-	String description;  
-	Integer seatHoldId;
-	Integer status;    // 0=available, 1=OnHold, 2=reserved
 
-	public Seats(){ }
+public class Seats {
+	Long seatId;
+	Integer rowNumber;
+	Integer seatNumber;
+	String description;
+
+	public Seats() {
+	}
 
 	public Seats(Long seatId, Integer rowNumber, Integer seatNumber,
 			String description, Integer seatHoldId, Integer status) {
@@ -24,15 +15,13 @@ public class Seats {
 		this.rowNumber = rowNumber;
 		this.seatNumber = seatNumber;
 		this.description = description;
-		this.seatHoldId = seatHoldId;
-		this.status = status;
 	}
 
 	@Override
 	public String toString() {
 		return "Seats [seatId=" + seatId + ", rowNumber=" + rowNumber
 				+ ", seatNumber=" + seatNumber + ", description=" + description
-				+ ", seatHoldId=" + seatHoldId + ", status=" + status + "]";
+				+ "]";
 	}
 
 	public Long getSeatId() {
@@ -65,22 +54,6 @@ public class Seats {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public Integer getSeatHoldId() {
-		return seatHoldId;
-	}
-
-	public void setSeatHoldId(Integer seatHoldId) {
-		this.seatHoldId = seatHoldId;
-	}
-
-	public Integer getStatus() {
-		return status;
-	}
-
-	public void setStatus(Integer status) {
-		this.status = status;
 	}
 
 }

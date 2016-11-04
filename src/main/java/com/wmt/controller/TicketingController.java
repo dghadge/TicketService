@@ -38,6 +38,12 @@ public class TicketingController {
 		try {
 			SeatHold seatHold = seatHoldDAO.findAndHoldSeats(numSeats,
 					customerEmail);
+
+			if (seatHold.getSeats().size() <= 0)
+				return new RestApiResponse(Status.OK, seatHold,
+						new RestApiError(1, "Unable to hold " + numSeats
+								+ " seats. No more seats available."));
+
 			return new RestApiResponse(Status.OK, seatHold);
 		} catch (RuntimeException e) {
 			return new RestApiResponse(Status.ERROR, null, new RestApiError(1,
@@ -53,7 +59,13 @@ public class TicketingController {
 		try {
 			int confirmationCode = seatHoldDAO.reserveSeats(seatHoldId,
 					customerEmail);
-			return new RestApiResponse(Status.OK, confirmationCode);
+			if (confirmationCode <= 0)
+				return new RestApiResponse(
+						Status.OK,
+						"Unable to reserve seats. Possible reasons: Already reserved to same seatHoldId & customerEmail, invalid seatHoldId or customerEmail");
+
+			return new RestApiResponse(Status.OK, new String(
+					"confirmationCode:" + confirmationCode));
 		} catch (RuntimeException e) {
 			return new RestApiResponse(Status.ERROR, null, new RestApiError(2,
 					"Unable to reserve seats for seatHoldId : " + seatHoldId));
