@@ -29,13 +29,15 @@
      2. mvn package 
      3. mvn spring-boot:run  (this command will start the application)
      
-     NOTE : if jnuit fails that means there are no ore avaibale seats to hold/reserve. 
+     NOTE : if jnuit fails that means there are no more avaibale seats to hold/reserve. 
      Running the following command will delete the DB. 
+    
      flyway -url=jdbc:h2:file:~/tickets clean
+     
      Next time you run the application you will not encounter junit failures. 
      
 ###  How to use Rest API(s) 
      From command prompt run the following commands
      1. /seats   : curl localhost:8080/seats
-     2. /hold    : curl -X PUT -d numSeats=2    -d customerEmail="nyy@gmail.com" http://localhost:8090/hold
-     3. /reserve : curl -X PUT -d seatHoldId=10 -d customerEmail="nyy@gmail.com" http://localhost:8090/reserve
+     2. /hold    : curl -X PUT -d numSeats=2    -d customerEmail="wmt@gmail.com" http://localhost:8090/hold
+     3. /reserve : curl -X PUT -d seatHoldId=10 -d customerEmail="wmt@gmail.com" http://localhost:8090/reserve
