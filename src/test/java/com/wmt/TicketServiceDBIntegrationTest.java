@@ -23,6 +23,8 @@ public class TicketServiceDBIntegrationTest {
 
 	@Autowired
 	private SeatHoldDAO seatHoldDAO;
+	
+	SeatHold seathold = new SeatHold();
 
 	@Test
 	public void testNumSeatsAvailable() {
@@ -37,7 +39,8 @@ public class TicketServiceDBIntegrationTest {
 	
 	@Test
 	public void testReserveSeats() {
-		assertThat(seatHoldDAO.reserveSeats(1, "test@wmt.com"), equalTo(1));
+		SeatHold seathold = seatHoldDAO.findAndHoldSeats(1, "test@wmt.com");
+		assertThat(seatHoldDAO.reserveSeats(seathold.getSeatHoldId().intValue(), "test@wmt.com"), equalTo(seathold.getSeatHoldId().intValue()));
 	}
 	
 }
