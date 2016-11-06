@@ -29,7 +29,7 @@
      2. mvn package 
      3. mvn spring-boot:run  (this command will start the application)
      
-     NOTE : if jnuit fails after multiple re-runs, it probably means that there are no more avaibale seats to hold/reserve. 
+     NOTE : if jnuit fails after multiple re-runs, its because there are no more avaibale seats. 
      Running the following command will recreate new seats in the DB. 
     
      flyway -url=jdbc:h2:file:~/tickets clean    (username=sa, password is blank)
@@ -38,6 +38,6 @@
      
 ###  How to use Rest API(s) 
      From command prompt run the following commands
-     1. /seats   : curl localhost:8000/seats
+     1. /seats   : curl localhost:8090/seats
      2. /hold    : curl -X PUT -d numSeats=2    -d customerEmail="wmt@gmail.com" http://localhost:8090/hold
      3. /reserve : curl -X PUT -d seatHoldId=10 -d customerEmail="wmt@gmail.com" http://localhost:8090/reserve
