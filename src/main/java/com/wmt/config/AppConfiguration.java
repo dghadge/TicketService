@@ -8,31 +8,38 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 
 import com.wmt.dao.SeatHoldDAO;
 import com.wmt.dao.SeatHoldDAOImpl;
 
 @Configuration
-public class DbConfiguration {
+public class AppConfiguration {
 
 	@Bean
-	@ConfigurationProperties(prefix="spring.datasource")
+	@ConfigurationProperties(prefix = "spring.datasource")
 	@Primary
-	public DataSource dataSource(){
+	public DataSource dataSource() {
 		return DataSourceBuilder.create().build();
 	}
-	
-	//If permissions are restricted on primary DataSource - use secondary datasource
+
+	// If permissions are restricted on primary DataSource - use secondary
+	// datasource
 	@Bean
-	@ConfigurationProperties(prefix="flyway.datasource")
+	@ConfigurationProperties(prefix = "flyway.datasource")
 	@FlywayDataSource
-	public DataSource flywayDataSource(){
+	public DataSource flywayDataSource() {
 		return DataSourceBuilder.create().build();
 	}
-	
+
 	@Bean
-    public SeatHoldDAO getSeatHoldDAO() {
-        return new SeatHoldDAOImpl(dataSource());
-    }
-	
+	public SeatHoldDAO getSeatHoldDAO() {
+		return new SeatHoldDAOImpl(dataSource());
+	}
+
+	@Bean
+	public MethodValidationPostProcessor methodValidationPostProcessor() {
+		return new MethodValidationPostProcessor();
+	}
+
 }

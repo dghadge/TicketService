@@ -22,7 +22,7 @@ public class SeatHoldDAOImpl implements SeatHoldDAO {
 	}
 
 	public int numSeatsAvailable() {
-		String sql = "select count(*) from seats where (DATEDIFF('second', lastheldtime, CURRENT_TIMESTAMP())-900>0 OR status=0)";
+		String sql = "select count(*) from seats where ((DATEDIFF('second', lastheldtime, CURRENT_TIMESTAMP())-900>0 AND status=1) OR status=0)";
 		int total = this.jdbcTemplate.queryForObject(sql, Integer.class);
 		return total;
 	}
