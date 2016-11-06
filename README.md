@@ -29,10 +29,10 @@
      2. mvn package 
      3. mvn spring-boot:run  (this command will start the application)
      
-   ### NOTE : if jnuit fails after multiple re-runs, it probably means that there are no more avaibale seats to hold/reserve. 
-   ### Running the following command will recreate new seats in the DB. 
+     NOTE : if jnuit fails after multiple re-runs, it probably means that there are no more avaibale seats to hold/reserve. 
+     Running the following command will recreate new seats in the DB. 
     
-   ### flyway -url=jdbc:h2:file:~/tickets clean    (username=sa, password is blank)
+     flyway -url=jdbc:h2:file:~/tickets clean    (username=sa, password is blank)
      
      Next time you run the application you will not encounter junit failures. 
      
