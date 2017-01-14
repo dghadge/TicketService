@@ -10,6 +10,7 @@ import java.util.Map;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.HttpEntity;
@@ -27,8 +28,10 @@ import com.wmt.model.SeatHold;
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
 
 public class TicketServiceRestIntegrationTest {
+	
 	@Autowired
-	private SeatHoldDAO seatHoldDAO;
+	@Qualifier("seatHoldDAOTest")
+	private SeatHoldDAO seatHoldDAOTest;
 	
 	@Test
 	public void testURISeats() throws IOException {
@@ -45,7 +48,7 @@ public class TicketServiceRestIntegrationTest {
 		
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("numSeats", "1");
-		params.put("customerEmail", "test@wmt.com");
+		params.put("customerEmail", "prod-hold-test@wmt.com");
 		
 		HttpHeaders headers = new HttpHeaders();
 		headers.set("Accept", "application/json");
@@ -63,7 +66,7 @@ public class TicketServiceRestIntegrationTest {
 	public void testURIReserve() throws IOException {
 		RestTemplate restTemplate = new RestTemplate();
 		
-		SeatHold seathold = seatHoldDAO.findAndHoldSeats(1, "test@wmt.com");
+		SeatHold seathold = seatHoldDAOTest.findAndHoldSeats(1, "prod-res-test@wmt.com");
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("seatHoldId", seathold.getSeatHoldId().toString());
 		params.put("customerEmail", seathold.getEmail());
@@ -79,5 +82,4 @@ public class TicketServiceRestIntegrationTest {
 		
 		assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
 	}
-
 }

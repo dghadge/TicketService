@@ -28,16 +28,16 @@ public class AppConfiguration {
 	// In this case however we will be using a second datasource for performing our tests 
 	@Bean
 	@ConfigurationProperties(prefix = "test.datasource")
-	@FlywayDataSource
-	public DataSource flywayDataSource() {
+	public DataSource testDataSource() {
 		return DataSourceBuilder.create().build();
 	}
-
-	public void migrateTestDB() {
-		System.out.println(">>>>>Migrating TEST DS<<<<<<>");
+	
+	@Bean
+	public boolean migrateTestDataSource() {
 		final Flyway flyway = new Flyway();
-		flyway.setDataSource(flywayDataSource());
+		flyway.setDataSource(testDataSource());
 		flyway.migrate();
+		return true;
 	}
 	
 	@Bean
@@ -48,7 +48,7 @@ public class AppConfiguration {
 	
 	@Bean(name="seatHoldDAOTest")
 	public SeatHoldDAO getSeatHoldDAOTest() {
-		return new SeatHoldDAOImpl(flywayDataSource());
+		return new SeatHoldDAOImpl(testDataSource());
 	}
 
 	@Bean
