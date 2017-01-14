@@ -43,4 +43,5 @@
      3. /reserve : curl -X PUT -d seatHoldId=10 -d customerEmail="wmt@gmail.com" http://localhost:8090/reserve
      
 ###  Documentation for Actuator endpoints 
-     http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready-endpoints
+     http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready-endpoints/
+     
