@@ -41,3 +41,6 @@
      1. /seats   : curl localhost:8090/seats
      2. /hold    : curl -X PUT -d numSeats=2    -d customerEmail="wmt@gmail.com" http://localhost:8090/hold
      3. /reserve : curl -X PUT -d seatHoldId=10 -d customerEmail="wmt@gmail.com" http://localhost:8090/reserve
+     
+###  Documentation for Actuator endpoints 
+     http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready-endpoints
