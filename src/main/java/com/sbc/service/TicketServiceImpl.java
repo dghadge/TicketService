@@ -1,7 +1,8 @@
-package com.wmt.service;
+package com.sbc.service;
 
-import com.wmt.dao.SeatHoldDAO;
-import com.wmt.model.SeatHold;
+import com.sbc.dao.SeatHoldDAO;
+import com.sbc.model.SeatHold;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class TicketServiceImpl implements TicketService {

@@ -1,6 +1,6 @@
-package com.wmt.service;
+package com.sbc.service;
 
-import com.wmt.model.SeatHold;
+import com.sbc.model.SeatHold;
 
 
 public interface TicketService {

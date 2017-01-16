@@ -1,4 +1,4 @@
-package com.wmt;
+package com.sbc;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -21,8 +21,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.RestTemplate;
 
-import com.wmt.dao.SeatHoldDAO;
-import com.wmt.model.SeatHold;
+import com.sbc.dao.SeatHoldDAO;
+import com.sbc.model.SeatHold;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
@@ -48,7 +48,7 @@ public class TicketServiceRestIntegrationTest {
 		
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("numSeats", "1");
-		params.put("customerEmail", "prod-hold-test@wmt.com");
+		params.put("customerEmail", "prod-hold-test@sbc.com");
 		
 		HttpHeaders headers = new HttpHeaders();
 		headers.set("Accept", "application/json");
@@ -66,7 +66,7 @@ public class TicketServiceRestIntegrationTest {
 	public void testURIReserve() throws IOException {
 		RestTemplate restTemplate = new RestTemplate();
 		
-		SeatHold seathold = seatHoldDAOTest.findAndHoldSeats(1, "prod-res-test@wmt.com");
+		SeatHold seathold = seatHoldDAOTest.findAndHoldSeats(1, "prod-res-test@sbc.com");
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("seatHoldId", seathold.getSeatHoldId().toString());
 		params.put("customerEmail", seathold.getEmail());

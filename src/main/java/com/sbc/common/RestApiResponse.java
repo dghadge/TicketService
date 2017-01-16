@@ -1,4 +1,4 @@
-package com.wmt.common;
+package com.sbc.common;
 
 public class RestApiResponse {
 

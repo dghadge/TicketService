@@ -1,4 +1,4 @@
-package com.wmt.dao;
+package com.sbc.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,8 +10,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.wmt.model.SeatHold;
-import com.wmt.model.Seats;
+import com.sbc.model.SeatHold;
+import com.sbc.model.Seats;
 
 public class SeatHoldDAOImpl implements SeatHoldDAO {
 

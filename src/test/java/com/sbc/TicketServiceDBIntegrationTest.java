@@ -1,4 +1,4 @@
-package com.wmt;
+package com.sbc;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -14,8 +14,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.wmt.dao.SeatHoldDAO;
-import com.wmt.model.SeatHold;
+import com.sbc.dao.SeatHoldDAO;
+import com.sbc.model.SeatHold;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)
@@ -35,14 +35,14 @@ public class TicketServiceDBIntegrationTest {
 	
 	@Test
 	public void testFindAndHoldSeats() {
-		SeatHold seathold = seatHoldDAOTest.findAndHoldSeats(1, "test@wmt.com");
+		SeatHold seathold = seatHoldDAOTest.findAndHoldSeats(1, "test@sbc.com");
 		assertThat(seathold.getSeats().size(), is(greaterThan(0)));
 	}
 	
 	@Test
 	public void testReserveSeats() {
-		SeatHold seathold = seatHoldDAOTest.findAndHoldSeats(1, "test@wmt.com");
-		assertThat(seatHoldDAOTest.reserveSeats(seathold.getSeatHoldId().intValue(), "test@wmt.com"), equalTo(seathold.getSeatHoldId().intValue()));
+		SeatHold seathold = seatHoldDAOTest.findAndHoldSeats(1, "test@sbc.com");
+		assertThat(seatHoldDAOTest.reserveSeats(seathold.getSeatHoldId().intValue(), "test@sbc.com"), equalTo(seathold.getSeatHoldId().intValue()));
 	}
 	
 }

@@ -1,4 +1,4 @@
-package com.wmt.model;
+package com.sbc.model;
 
 import java.util.List;
 

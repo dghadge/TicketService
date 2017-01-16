@@ -1,4 +1,4 @@
-package com.wmt.controller;
+package com.sbc.controller;
 
 import java.util.Set;
 
@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.wmt.common.RestApiResponse;
-import com.wmt.common.RestApiResponse.RestApiError;
-import com.wmt.common.RestApiResponse.Status;
-import com.wmt.dao.SeatHoldDAO;
-import com.wmt.model.SeatHold;
+import com.sbc.common.RestApiResponse;
+import com.sbc.common.RestApiResponse.RestApiError;
+import com.sbc.common.RestApiResponse.Status;
+import com.sbc.dao.SeatHoldDAO;
+import com.sbc.model.SeatHold;
 
 @RestController
 @Validated

@@ -1,4 +1,4 @@
-package com.wmt.config;
+package com.sbc.config;
 
 import javax.sql.DataSource;
 
@@ -11,8 +11,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 
-import com.wmt.dao.SeatHoldDAO;
-import com.wmt.dao.SeatHoldDAOImpl;
+import com.sbc.dao.SeatHoldDAO;
+import com.sbc.dao.SeatHoldDAOImpl;
 
 @Configuration
 public class AppConfiguration {

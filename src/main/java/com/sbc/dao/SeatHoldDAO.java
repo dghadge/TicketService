@@ -1,6 +1,6 @@
-package com.wmt.dao;
+package com.sbc.dao;
 
-import com.wmt.model.SeatHold;
+import com.sbc.model.SeatHold;
 
 public interface SeatHoldDAO {
 	

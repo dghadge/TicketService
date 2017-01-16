@@ -1,8 +1,9 @@
-package com.wmt;
+package com.sbc;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 //import org.springframework.beans.factory.annotation.Qualifier;
+
 
 
 import org.junit.Before;
@@ -11,11 +12,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import com.wmt.common.RestApiResponse;
-import com.wmt.common.RestApiResponse.Status;
-import com.wmt.controller.TicketingController;
-import com.wmt.dao.SeatHoldDAO;
-import com.wmt.model.SeatHold;
+import com.sbc.common.RestApiResponse;
+import com.sbc.common.RestApiResponse.Status;
+import com.sbc.controller.TicketingController;
+import com.sbc.dao.SeatHoldDAO;
+import com.sbc.model.SeatHold;
 
 public class TicketServiceUnitTest {
 

@@ -1,4 +1,4 @@
-package com.wmt.model;
+package com.sbc.model;
 
 public class Seats {
 	Long seatId;
