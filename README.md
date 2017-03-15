@@ -6,6 +6,7 @@
      DAO       : Spring JDBCTemplate
      Testing   : JUnit, Mockito, Hamcrest
      Migration : Flyway
+     NOTE : pom.xml has dependencies for all required technical components and will be downloaded during "package" step.
 
 ### Rest API(s)
      /seats    : returns number of available seats. 
