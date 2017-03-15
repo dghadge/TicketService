@@ -1,7 +1,3 @@
-general:
-  artifacts:
-    - "~/TicketService/target/ticketingservice-1.0.1-RELEASE.jar"
-
 test:
   post:
     - cp ~/TicketService/target/ticketingservice-1.0.1-RELEASE.jar $CIRCLE_ARTIFACTS/.
