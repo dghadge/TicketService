@@ -11,3 +11,4 @@ public
 maven-status
 maven-archiver
 surefire-reports
+/target/
