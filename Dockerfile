@@ -1,11 +1,5 @@
 FROM java:8
 
-RUN apt-get update
-
-RUN apt-get install -y maven
-
-VOLUME /tmp
-
 ADD ticketingservice-1.0.1-RELEASE.jar app.jar
 
 RUN sh -c 'touch /app.jar'
