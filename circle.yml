@@ -9,11 +9,6 @@ dependencies:
   override:
     - docker build -t dghadge/ticketingservice .
   
-test:
-  override:
-    - docker run -d -p 8090:8090 dghadge/ticketingservice; sleep 10
-    - curl --retry 10 --retry-delay 5 -v http://localhost:8090
-
 deployment:
   hub: 
     branch: master
