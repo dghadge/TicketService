@@ -6,7 +6,7 @@ test:
   post:
     - docker build -t dghadge/ticketingservice .
     - docker run -d -p 8091:8090 dghadge/ticketingservice
-    - sleep 10
+    - sleep 60
     - curl --retry 10 --retry-delay 5 -v http://localhost:8091
 
 general:
