@@ -3,12 +3,18 @@ machine:
     - docker
 
 dependencies:
-  pre:
-    - mvn package
-    - cp ~/TicketService/target/ticketingservice-1.0.1-RELEASE.jar $CIRCLE_ARTIFACTS/.
   override:
     - docker build -t dghadge/ticketingservice .
   
+test:
+  post:
+    - docker run -d -p 9191:8090 dghadge/ticketingservice; sleep 10
+    - curl --retry 10 --retry-delay 5 -v http://localhost:9191
+
+general:
+  artifacts:
+    - ~/TicketService/target/ticketingservice-1.0.1-RELEASE.jar
+
 deployment:
   hub: 
     branch: master
