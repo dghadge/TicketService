@@ -4,7 +4,6 @@ machine:
 
 test:
   post:
-    - cp ~/TicketService/target/ticketingservice-1.0.1-RELEASE.jar $CIRCLE_ARTIFACTS/.
     - docker run -d -p 8090:8090 dghadge/ticketingservice; sleep 10
     - curl --retry 10 --retry-delay 5 -v http://localhost:8090
       
@@ -12,5 +11,9 @@ deployment:
   hub:
     branch: master
     commands:
-      - docker build --rm=false -t dghadge/ticketingservice .
+      - cp ~/TicketService/target/ticketingservice-1.0.1-RELEASE.jar $CIRCLE_ARTIFACTS/.
+      - cp ~/TicketService/Dockerfile $CIRCLE_ARTIFACTS/.
+      - cd $CIRCLE_ARTIFACTS
+      - docker build -t dghadge/ticketingservice .
+      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
       - docker push dghadge/ticketingservice
