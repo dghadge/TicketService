@@ -10,7 +10,7 @@ deployment:
       - cp ~/TicketService/Dockerfile $CIRCLE_ARTIFACTS/.
       - cd $CIRCLE_ARTIFACTS
       - docker build -t dghadge/ticketingservice .
-      - docker run -d -p 8090:8090 dghadge/ticketingservice; sleep 10
+      - docker run -d -p 8090:8090 dghadge/ticketingservice; sleep 5
       - curl --retry 10 --retry-delay 5 -v http://localhost:8090
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
       - docker push dghadge/ticketingservice
