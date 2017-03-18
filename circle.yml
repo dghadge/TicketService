@@ -1,9 +1,23 @@
+machine:
+  services:
+    - docker
+
+dependencies:
+  override:
+    - docker info
+    - docker build --rm=false -t dghadge/ticketingservice .
+
 test:
   post:
     - cp ~/TicketService/target/ticketingservice-1.0.1-RELEASE.jar $CIRCLE_ARTIFACTS/.
 
+ override:
+    - docker run -d -p 8090:8090 dghadge/ticketingservice; sleep 10
+    - curl --retry 10 --retry-delay 5 -v http://localhost:8090
+      
+
 deployment:
-  dockerhub:
+  hub:
     branch: master
     commands:
-      - $DOCKER_HUB_TRIGGER
+      - docker push dghadge/ticketingservice
