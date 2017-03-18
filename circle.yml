@@ -6,10 +6,7 @@ dependencies:
   pre:
     - mvn package
     - cp ~/TicketService/target/ticketingservice-1.0.1-RELEASE.jar $CIRCLE_ARTIFACTS/.
-    - cp ~/TicketService/Dockerfile $CIRCLE_ARTIFACTS/.
   override:
-    - cd $CIRCLE_ARTIFACTS
-    - ls ticketingservice-1.0.1-RELEASE.jar
     - docker build -t dghadge/ticketingservice .
   
 test:
