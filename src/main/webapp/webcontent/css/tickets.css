@@ -1,0 +1,119 @@
+/*Start : Custom overrides  */
+/*Dont know a better way to reverse the table-striped colors*/
+.table-striped>tbody>tr:nth-child(even)>td, 
+.table-striped>tbody>tr:nth-child(even)>th {
+   background-color: #f2f3f4;
+ }
+.table-striped>tbody>tr:nth-child(odd)>td, 
+.table-striped>tbody>tr:nth-child(odd)>th {
+   background-color: white;
+ }
+
+.table > thead> tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+        padding: 2px;
+        padding-right: 8px;
+        padding-left: 8px;
+}
+
+.fa-2x {
+    font-size: 1.5em;
+}
+/*End  : Custom Overrides*/
+
+body {
+     margin: 0;
+     background: url('../images/21Pilots.jpg');
+     background-size:100% auto;
+     background-repeat:repeat;
+     display: compact;
+     font: 13px/18px "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+header {
+    background-color: #002f55;
+    color: #f7f7f7;
+}
+header h1 {
+    height: 60px;
+    margin: 0;
+    font-size: 250%;
+    font-weight: 600;
+}
+/*keeps elements on single line*/
+header h1 > div {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    float: left;
+}
+header h1 .tickets-logo {
+    width: 1px;
+    height: 45px;
+    margin-left: 20%;
+    color: aliceblue;
+}
+header h1 .tickets-logo img {
+    vertical-align: top;
+    height: 100%;
+    width: 100%;
+    margin-left: 20%;
+    color: aliceblue;
+}
+header h1 .head-text {
+     font-family: verdana;
+    font-weight: normal;
+    font-size: 80%;
+    color: aliceblue;
+    padding-left: 50px;
+}
+
+.pd-header {
+    font-family: verdana;
+    font-size: 150%;
+    color: #1a3b70;
+    padding-bottom: 9px;
+    margin: 10px 0 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+thead h4  {
+    font-family: verdana;
+    font-size: 100%;
+    font-weight:bold;
+    color: #1a3b70;
+}
+
+tbody h4  {
+    font-family: verdana;
+    font-size: 80%;
+    color: #1a3b70;
+    margin-top: 5px;
+    margin-bottom: 0px;
+}
+
+@media (max-width: 991px) {
+    header h1 {
+        clear: right;
+    }
+    header h1 .ace-logo {
+        padding-right: 5px;
+        border-right: none;
+    }
+    header h1 .ace-logo div:nth-child(2) {
+        font-size: 25%;
+        color: #7ec5ff;
+    }
+    header h1 .tickets-logo {
+        margin-right: 5px;
+    }
+}
+
+body h4 a,
+body h4 a:active,
+body h4 a:hover {
+    text-decoration: none;
+}
+#description-container {
+    background-color: #f3f3f3;
+    border-bottom: 1px solid #cccccc;
+}
