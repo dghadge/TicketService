@@ -31,11 +31,15 @@ public class TicketingController {
 	@Autowired
 	private SeatHoldDAO seatHoldDAO;
 
-	@RequestMapping("/")
 	public String home() {
 		return "Welcome to your ticketing service";
 	}
 
+	@RequestMapping("/")
+	public String index() {
+		return "index.html"; 
+	}
+	
 	@RequestMapping(value = "/seats", method = RequestMethod.GET)
 	public RestApiResponse getNumOfSeats() {
 		int numSeats = seatHoldDAO.numSeatsAvailable();
