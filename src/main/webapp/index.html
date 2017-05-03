@@ -31,17 +31,18 @@
                 <div class="tickets-logo">
                     <i class="fa fa-ticket" aria-hidden="true"></i>
                 </div>
-                <div class="head-text">Concert Tickets !! Awesome Seats Zero Hassel</div>
+                <div class="head-text">TicketService - Concert Ticket Booking Made Easy</div>
             </h1>
         </div>
     </header>
 
     <div class="row" ng-controller="ticketsController">
         <div ng-show="action==1">
+
             <body style="background-color: #7e7e7e; opacity:0.9">
                 <div class="col-sm-6 col-sm-offset-3">
                     <div class="well" style="margin-top: 70%;">
-                        <h3>Find Seats !!</h3>
+                        <h3>Check Available Seats</h3>
                         <form ng-submit="holdSeats()" data-toggle="validator" class="shake">
                             <div class="row">
                                 <div class="form-group col-sm-6">
@@ -62,14 +63,15 @@
             </body>
         </div>
         <div ng-show="action==2">
+
             <body style="background-color: #7e7e7e; opacity:0.9">
                 <div class="col-sm-6 col-sm-offset-3">
                     <div class="well" style="margin-top: 70%;">
-                        <h3>Please Confirm !!</h3>
+                        <h3>Your Seat Information</h3>
                         <form ng-submit="reserveSeats()" class="shake">
                             <div class="row">
                                 <div class="form-group col-sm-6">
-                                    <input type="email" class="form-control" ng-model="email">
+                                    <input type="text" class="form-control" ng-model="seatText">
                                 </div>
                                 <div class="form-group col-sm-4">
                                     <input type="text" class="form-control" ng-model="seatHoldIdText">
@@ -84,15 +86,16 @@
             </body>
         </div>
         <div ng-show="action==3">
+
             <body style="background-color: #7e7e7e; opacity:0.9">
                 <div class="col-sm-6 col-sm-offset-3">
                     <div class="well" style="margin-top: 70%;">
-                        <h3>Congrats; You're going to the concert !!</h3>
-                            <div class="row">
-                                <div class="form-group col-sm-2">
-                                    <button type="submit" id="form-submit" class="btn btn-success btn-md pull-right " onclick="window.location.reload()">Browse</button>
-                                </div>
+                        <h3>Tickets Confirmed. Enjoy The Show.</h3>
+                        <div class="row">
+                            <div class="form-group col-sm-2">
+                                <button type="submit" id="form-submit" class="btn btn-success btn-md pull-right" onclick="window.location.reload()">Home</button>
                             </div>
+                        </div>
                     </div>
                 </div>
             </body>

@@ -13,6 +13,13 @@ myApp.controller('ticketsController', function ($scope, $http) {
             .then(
                 function mySuccess(response) {
                     $scope.seatHoldId = response.data.data.seatHoldId;
+                    $scope.seatText = "";
+                    if (response.data.data.seats.length > 1)
+                        $scope.seatText = response.data.data.seats[0].seatId +
+                    "-" + response.data.data.seats[response.data.data.seats.length - 1].seatId;
+                    else
+                        $scope.seatText = response.data.data.seats[0].seatId;
+                    $scope.seatText = "Your Seat Numbers: " + $scope.seatText;
                     $scope.seatHoldIdText = "Confirmation Code: " + response.data.data.seatHoldId;
                     $scope.action = 2;
                 },
