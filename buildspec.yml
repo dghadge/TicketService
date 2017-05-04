@@ -1,0 +1,28 @@
+version: 0.1
+
+environment_variables:
+  plaintext:
+    JAVA_HOME: "/usr/lib/jvm/java-8-openjdk-amd64"
+
+phases:
+  install:
+    commands:
+      - echo apt-get update -y
+      - echo apt-get install -y maven
+  pre_build:
+    commands:
+      - echo Nothing to do in the pre_build phase...
+  build:
+    commands:
+      - echo Build started on `date`
+      - mvn package
+  post_build:
+    commands:
+      - echo Build completed on `date`
+artifacts:
+  files:
+    - 'appspec.yml'
+    - 'scripts/start_app.sh'
+    - 'scripts/install_dependencies.sh'
+    - 'target/ticketingservice-1.0.1-RELEASE.war
+  discard-paths: no
