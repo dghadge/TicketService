@@ -4,6 +4,10 @@ files:
   - source: target/ticketingservice-1.0.1-RELEASE.war
     destination: /usr/javaapp
 hooks:
+  ApplicationStop:
+    - location: scripts/stop_app.sh
+      timeout: 180
+      runas: root
   AfterInstall:
     - location: scripts/install_dependencies.sh
       timeout: 180
