@@ -23,6 +23,7 @@ artifacts:
   files:
     - 'appspec.yml'
     - 'scripts/start_app.sh'
+    - 'scripts/stop_app.sh'
     - 'scripts/install_dependencies.sh'
     - 'target/ticketingservice-1.0.1-RELEASE.war'
   discard-paths: no
