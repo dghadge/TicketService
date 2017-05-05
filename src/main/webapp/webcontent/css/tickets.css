@@ -33,6 +33,24 @@
     -moz-background-size: cover;
 }
 
+.carousel .four {
+    background: url('../images/edsheeran.jpg');
+    background-size: cover;
+    -moz-background-size: cover;
+}
+
+.carousel .five {
+    background: url('../images/gaga.jpg');
+    background-size: cover;
+    -moz-background-size: cover;
+}
+
+.carousel .six {
+    background: url('../images/jt.jpeg');
+    background-size: cover;
+    -moz-background-size: cover;
+}
+
 .carousel .active.left {
     left: 0;
     opacity: 1;
