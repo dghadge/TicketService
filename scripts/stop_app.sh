@@ -1,5 +1,5 @@
 #!/bin/bash
 
-/etc/init.d/ticketservice stop
+service ticketservice stop
 
-rm -f /etc/init.d/ticketserver
+rm -f /etc/init.d/ticketservice
