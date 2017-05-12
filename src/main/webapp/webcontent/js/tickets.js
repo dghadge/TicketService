@@ -3,7 +3,7 @@ var myApp = angular.module('ticketservice', []);
 myApp.controller('ticketsController', function ($scope, $http) {
 
     $scope.holdSeats = function () {
-        var restEndPoint = "http://localhost:80";
+        var restEndPoint = "http://ticketservice-external-1018800493.us-east-1.elb.amazonaws.com";
         $http({
                 method: "PUT",
                 async: false,
@@ -29,7 +29,7 @@ myApp.controller('ticketsController', function ($scope, $http) {
     }
 
     $scope.reserveSeats = function () {
-        var restEndPoint = "http://localhost:80";
+        var restEndPoint = "http://ticketservice-external-1018800493.us-east-1.elb.amazonaws.com";
         $http({
                 method: "PUT",
                 async: false,
