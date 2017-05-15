@@ -5,6 +5,11 @@ myApp.controller('ticketsController', function ($scope, $http) {
     $scope.holdSeats = function () {
         var restEndPoint = "http://ticketservice-external-1018800493.us-east-1.elb.amazonaws.com";
         $http({
+                headers: {
+                    "Access-Control-Allow-Origin": '*',
+                    "Access-Control-Allow-Headers": 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token',
+                    "Access-Control-Allow-Methods": 'GET, PUT'
+                },
                 method: "PUT",
                 async: false,
                 url: restEndPoint +
@@ -31,6 +36,11 @@ myApp.controller('ticketsController', function ($scope, $http) {
     $scope.reserveSeats = function () {
         var restEndPoint = "http://ticketservice-external-1018800493.us-east-1.elb.amazonaws.com";
         $http({
+                headers: {
+                    "Access-Control-Allow-Origin": '*',
+                    "Access-Control-Allow-Headers": 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token',
+                    "Access-Control-Allow-Methods": 'GET, PUT'
+                },
                 method: "PUT",
                 async: false,
                 url: restEndPoint +
