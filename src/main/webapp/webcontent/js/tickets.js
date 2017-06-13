@@ -3,7 +3,8 @@ var myApp = angular.module('ticketservice', []);
 myApp.controller('ticketsController', function ($scope, $http) {
 
     $scope.holdSeats = function () {
-        var restEndPoint = "http://ticketservice-external-1018800493.us-east-1.elb.amazonaws.com";
+        var restEndPoint = "http://localhost:8090"
+        #var restEndPoint = "http://ticketservice-external-1018800493.us-east-1.elb.amazonaws.com";
         $http({
                 headers: {
                     "Access-Control-Allow-Origin": '*',
@@ -34,7 +35,8 @@ myApp.controller('ticketsController', function ($scope, $http) {
     }
 
     $scope.reserveSeats = function () {
-        var restEndPoint = "http://ticketservice-external-1018800493.us-east-1.elb.amazonaws.com";
+        var restEndPoint = "http://localhost:8090"
+        #var restEndPoint = "http://ticketservice-external-1018800493.us-east-1.elb.amazonaws.com";
         $http({
                 headers: {
                     "Access-Control-Allow-Origin": '*',
