@@ -46,6 +46,7 @@
 ###  Documentation for Actuator endpoints 
      http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready-endpoints/
 
+
 ###  Docker related commands(optional)
      $~ docker build -t dghadge/ticketservice . ###  Note "." at the end
      $~ docker run -p 8090:8090 -ti ticketingservice
