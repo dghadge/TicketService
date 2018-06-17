@@ -1,0 +1,171 @@
+/*Carousel Slider*/
+
+.carousel {
+    z-index: -99;
+}
+
+.carousel .item {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    -webkit-transition-duration: 700ms;
+    -moz-transition-duration: 700ms;
+    -o-transition-duration: 700ms;
+    -ms-transition-duration: 700ms;
+    transition-duration: 700ms;
+}
+
+.carousel .one {
+    background: url('../images/21Pilots.jpg');
+    background-size: cover;
+    -moz-background-size: cover;
+}
+
+.carousel .two {
+    background: url('../images/Springstien.jpg');
+    background-size: cover;
+    -moz-background-size: cover;
+}
+
+.carousel .three {
+    background: url('../images/Drake.jpg');
+    background-size: cover;
+    -moz-background-size: cover;
+}
+
+.carousel .four {
+    background: url('../images/edsheeran.jpg');
+    background-size: cover;
+    -moz-background-size: cover;
+}
+
+.carousel .five {
+    background: url('../images/gaga.jpg');
+    background-size: cover;
+    -moz-background-size: cover;
+}
+
+.carousel .six {
+    background: url('../images/jt.jpeg');
+    background-size: cover;
+    -moz-background-size: cover;
+}
+
+.carousel .active.left {
+    left: 0;
+    opacity: 1;
+    z-index: 2;
+}
+
+
+/*Carousel Slider*/
+
+header {
+    background-color: #002f55;
+    color: #f7f7f7;
+}
+
+header h1 {
+    height: 60px;
+    margin: 0;
+    font-size: 250%;
+    font-weight: 600;
+}
+
+
+/*keeps elements on single line*/
+
+header h1>div {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    float: left;
+}
+
+header h1 .tickets-logo {
+    width: 1px;
+    height: 45px;
+    margin-left: 20%;
+    color: aliceblue;
+}
+
+header h1 .tickets-logo img {
+    vertical-align: top;
+    height: 100%;
+    width: 100%;
+    margin-left: 20%;
+    color: aliceblue;
+}
+
+header h1 .head-text {
+    font-family: verdana;
+    font-weight: normal;
+    font-size: 80%;
+    color: aliceblue;
+    padding-left: 50px;
+}
+
+.pd-header {
+    font-family: verdana;
+    font-size: 150%;
+    color: #1a3b70;
+    padding-bottom: 9px;
+    margin: 10px 0 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+thead h4 {
+    font-family: verdana;
+    font-size: 100%;
+    font-weight: bold;
+    color: #1a3b70;
+}
+
+tbody h4 {
+    font-family: verdana;
+    font-size: 80%;
+    color: #1a3b70;
+    margin-top: 5px;
+    margin-bottom: 0px;
+}
+
+.mywell {
+    min-height: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    opacity: 0.85;
+    margin-bottom: 5px;
+    background-color: #f5f5f5;
+    border: 1px solid #e3e3e3;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+@media (max-width: 991px) {
+    header h1 {
+        clear: right;
+    }
+    header h1 .ace-logo {
+        padding-right: 5px;
+        border-right: none;
+    }
+    header h1 .ace-logo div:nth-child(2) {
+        font-size: 25%;
+        color: #7ec5ff;
+    }
+    header h1 .tickets-logo {
+        margin-right: 5px;
+    }
+}
+
+body h4 a,
+body h4 a:active,
+body h4 a:hover {
+    text-decoration: none;
+}
+
+#description-container {
+    background-color: #f3f3f3;
+    border-bottom: 1px solid #cccccc;
+}
