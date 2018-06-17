@@ -31,8 +31,9 @@ public class TicketingController {
 	@Autowired
 	private SeatHoldDAO seatHoldDAO;
 
+	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home() {
-		return "Welcome to your ticketing service";
+		return "Welcome to your ticketing service\n";
 	}
 	
 	@RequestMapping(value = "/seats", method = RequestMethod.GET)
@@ -43,6 +44,11 @@ public class TicketingController {
 					"Unable to find seats. No more seats available."));
 
 		return new RestApiResponse(Status.OK, numSeats);
+	}
+
+	@RequestMapping(value = "/hold", method = RequestMethod.GET)
+	public String hold() {
+		return "Send me valid hold request\n";
 	}
 
 	// URI Pattern : /hold ? numSeats=NNN & customerEmail=AAA
@@ -72,6 +78,11 @@ public class TicketingController {
 					"Unable to hold " + numSeats + " seats"));
 		}
 
+	}
+
+	@RequestMapping(value = "/reserve", method = RequestMethod.GET)
+	public String reserve() {
+		return "Send me valid reserve request\n";
 	}
 
 	// URI Pattern : /reserve ? seatHoldId=NNN & customerEmail=AAA
