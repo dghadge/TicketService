@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="ticketservice" ng-init="action=1">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!--Auto refresh every 5 minutes-->
+    <meta http-equiv="refresh" content="300">
+    <link rel="icon" href="webcontent/images/ticket.png">
+
+    <title>Ticket Service</title>
+    <script src="webcontent/js/angular.min.js"></script>
+    
+    <!-- Bootstrap core CSS -->
+    <link href="webcontent/css/bootstrap.min.css" rel="stylesheet">
+    <link href="webcontent/css/cerulean-bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="webcontent/font-awesome-4.7.0/css/font-awesome.min.css">
+    
+    <!-- Custom styles for this template -->
+    <script src="webcontent/js/tickets.js"></script>
+    <script src="webcontent/js/jquery.min.js"></script>
+    <link href="webcontent/css/tickets.css" rel="stylesheet">
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.carousel').carousel({
+                interval: 10000
+            });
+        });
+    </script>
+
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-inverse navbar-fixed-top cbp-af-header" role="navigation">
+
+            <div class="container-fluid hidden-xs">
+                <h1>
+                    <div class="tickets-logo">
+                        <i class="fa fa-ticket" aria-hidden="true"></i>
+                    </div>
+                    <div class="head-text">TicketService - Concert Ticket Booking Made Easy</div>
+                </h1>
+            </div>
+        </nav>
+    </header>
+
+    <div id="myCarousel" class="carousel container slide">
+        <div class="carousel-inner">
+            <div class="active item one"></div>
+            <div class="item two"></div>
+            <div class="item three"></div>
+            <div class="item four"></div>
+            <div class="item five"></div>
+            <div class="item six"></div>
+        </div>
+    </div>
+    <div class="row" ng-controller="ticketsController">
+        <div ng-show="action==1">
+
+            <body style="background-color: #7e7e7e">
+                <div class="col-sm-6 col-sm-offset-3">
+                    <div class="mywell" style="margin-top: 85%;">
+                        <h3>Check Available Seats</h3>
+                        <form ng-submit="holdSeats()" data-toggle="validator" class="shake">
+                            <div class="row">
+                                <div class="form-group col-sm-6">
+                                    <input type="email" class="form-control" ng-model="email" placeholder="Enter email" required>
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <input type="text" class="form-control" ng-model="numSeats" placeholder="Enter Number of Seats" required data-error="NEW ERROR MESSAGE">
+                                    <div class="help-block with-errors"></div>
+                                </div>
+                                <div class="form-group col-sm-2">
+                                    <button type="submit" id="form-submit" class="btn btn-success btn-md pull-right ">Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </body>
+        </div>
+        <div ng-show="action==2">
+
+            <body style="background-color: #7e7e7e; opacity:0.9">
+                <div class="col-sm-6 col-sm-offset-3">
+                    <div class="mywell" style="margin-top: 85%;">
+                        <h3>Your Seat Information</h3>
+                        <form ng-submit="reserveSeats()" class="shake">
+                            <div class="row">
+                                <div class="form-group col-sm-6">
+                                    <input type="text" class="form-control" ng-model="seatText">
+                                </div>
+                                <div class="form-group col-sm-4">
+                                    <input type="text" class="form-control" ng-model="seatHoldIdText">
+                                </div>
+                                <div class="form-group col-sm-2">
+                                    <button type="submit" id="form-submit" class="btn btn-success btn-md pull-right ">Confirm</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </body>
+        </div>
+        <div ng-show="action==3">
+
+            <body style="background-color: #7e7e7e; opacity:0.9">
+                <div class="col-sm-6 col-sm-offset-3">
+                    <div class="mywell" style="margin-top: 85%;">
+                        <h3>Tickets Confirmed. Enjoy The Show.</h3>
+                        <div class="row opacity:1">
+                            <div class="form-group col-sm-2">
+                                <button type="submit" id="form-submit" class="btn btn-success btn-md pull-right" onclick="window.location.reload()">Home</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </body>
+        </div>
+    </div>
+
+
+    <!-- Bootstrap core JavaScript
+	    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="webcontent/js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="webcontent/js/ie10-viewport-bug-workaround.js"></script>
+</body>
+
+</html>
