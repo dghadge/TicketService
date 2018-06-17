@@ -7,5 +7,5 @@
      From command prompt run the following commands
      1. git clone https://github.com/dghadge/ticketservice.git
      2. cd dynamic-webui
-     2. mvn package 
-     3. mvn spring-boot:run  (this command will start the application)
+     3. mvn package 
+     4. mvn spring-boot:run  (this command will start the application)
