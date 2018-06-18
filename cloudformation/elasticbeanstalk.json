@@ -1,0 +1,847 @@
+{
+    "Description": "Template to deploy Elastic Beanstalk application from S3. This template is designed to run after parent template to create vpc and subnets is run (default name of parent template is vpc-and-subnet.json).",
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Parameters": {
+        "Owner": {
+            "Description": "Enter Team or Individual Name Responsible for the Stack.",
+            "Type": "String",
+            "Default": "FirstName LastName"
+        },
+        "Project": {
+            "Description": "Enter Project Name.",
+            "Type": "String",
+            "Default": "TicketService"
+        },
+        "DeleteAfter": {
+            "Description": "Enter Date (MM/DD/YYYY). It's Ok to Delete the Stack or 'Never' if meant to be persistent.",
+            "Type": "String",
+            "Default": "00/00/201x"
+        },
+        "ApplicationName": {
+            "Description": "Enter Application Name. Must exist if true is selected in CreateApplication parameter",
+            "Type": "String",
+            "AllowedPattern": "^[a-zA-Z0-9]*$",
+            "ConstraintDescription": "Can contain only ASCII characters.",
+            "Default": "TicketService"
+        },
+        "EnvironmentName": {
+            "Description": "Enter Environment Name.",
+            "Type": "String",
+            "AllowedPattern": "[\\x20-\\x7E]*",
+            "ConstraintDescription": "Can contain only ASCII characters.",
+            "Default": "ts-env-green"
+        },
+        "SolutionStackName": {
+            "Type": "String",
+            "Description": "Solution Stack Name to deploy this application. (eg. 64bit Windows Server Core 2016 v1.2.0 running IIS 10.0)",
+            "AllowedPattern": "[\\x20-\\x7E]*",
+            "Default": "64bit Amazon Linux 2018.03 v2.7.1 running Java 8",
+            "ConstraintDescription": "Can contain only ASCII characters."
+        },
+        "S3Bucket": {
+            "Type": "String",
+            "Description": "S3 bucket which holds the application code.",
+            "AllowedPattern": "[\\x20-\\x7E]*",
+            "ConstraintDescription": "Can contain only ASCII characters."
+        },
+        "S3Key": {
+            "Type": "String",
+            "Description": "Object name in S3 bucket(application code zip).",
+            "AllowedPattern": "[\\x20-\\x7E]*",
+            "ConstraintDescription": "Can contain only ASCII characters."
+        },
+        "EC2KeyName": {
+            "Description": "Name of your EC2 key pair",
+            "Type": "AWS::EC2::KeyPair::KeyName"
+        },
+        "VPCStackName": {
+            "Description": "Id of VPC that will be used in to create this application.",
+            "Type": "String"
+        },
+        "R53HostedZoneName": {
+            "Description": "(Enter only if Configuring Route 53) Hosted DNS Name.",
+            "Type": "String",
+            "Default": "ticketservice.com"
+        },
+        "R53RecordSetName": {
+            "Description": "(Enter only if Configuring Route 53) Hosted DNS Name.",
+            "Type": "String",
+            "Default": "api.ticketservice.com"
+        }
+    },
+    "Mappings": {
+        "BeanstalkToALBHostedZoneId": {
+            "us-east-1": {
+                "HostedZoneId": "Z35SXDOTRQ7X7K"
+            },
+            "us-east-2": {
+                "HostedZoneId": "Z3AADJGX6KTTL2"
+            },
+            "us-west-1": {
+                "HostedZoneId": "Z368ELLRRE2KJ0"
+            },
+            "us-west-2": {
+                "HostedZoneId": "Z1H1FL5HABSF5"
+            }
+        }
+    },
+    "Resources": {
+        "ElasticBeanstalkRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Sid": "",
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": [
+                                    "ec2.amazonaws.com",
+                                    "elasticbeanstalk.amazonaws.com",
+                                    "autoscaling.amazonaws.com",
+                                    "ssm.amazonaws.com"
+                                ]
+                            },
+                            "Action": "sts:AssumeRole"
+                        }
+                    ]
+                },
+                "Path": "/",
+                "ManagedPolicyArns": [
+                    "arn:aws:iam::aws:policy/AWSElasticBeanstalkWebTier",
+                    "arn:aws:iam::aws:policy/service-role/AWSElasticBeanstalkService",
+                    "arn:aws:iam::aws:policy/service-role/AWSElasticBeanstalkEnhancedHealth",
+                    "arn:aws:iam::aws:policy/AmazonRDSFullAccess",
+                    "arn:aws:iam::aws:policy/AmazonS3FullAccess",
+                    "arn:aws:iam::aws:policy/AmazonSSMFullAccess",
+                    "arn:aws:iam::aws:policy/AWSKeyManagementServicePowerUser"
+                ],
+                "Policies": [
+                    {
+                        "PolicyName": "ElasticBeanstalkInlinePolicy",
+                        "PolicyDocument": {
+                            "Version": "2012-10-17",
+                            "Statement": [
+                                {
+                                    "Effect": "Allow",
+                                    "Action": [
+                                        "ssm:DescribeParameters",
+                                        "ssm:GetParameter",
+                                        "ssm:GetParameters",
+                                        "sqs:SendMessage",
+                                        "sqs:GetQueueUrl",
+                                        "sns:Publish"
+                                    ],
+                                    "Resource": "*"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        "EBInstanceProfile": {
+            "Type": "AWS::IAM::InstanceProfile",
+            "Properties": {
+                "Path": "/",
+                "Roles": [
+                    {
+                        "Ref": "ElasticBeanstalkRole"
+                    }
+                ]
+            }
+        },
+        "InstanceSecurityGroup": {
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {
+                "GroupDescription": "Access to Instance",
+                "VpcId": {
+                    "Fn::ImportValue": {
+                        "Fn::Sub": "${VPCStackName}-VPCID"
+                    },
+                    "Tags": [
+                        {
+                            "Key": "Name",
+                            "Value": "TicketService"
+                        },
+                        {
+                            "Key": "Owner",
+                            "Value": {
+                                "Ref": "Owner"
+                            }
+                        },
+                        {
+                            "Key": "Project",
+                            "Value": {
+                                "Ref": "Project"
+                            }
+                        },
+                        {
+                            "Key": "DeleteAfter",
+                            "Value": {
+                                "Ref": "DeleteAfter"
+                            }
+                        }
+                    ],
+                    "SecurityGroupIngress": [
+                        {
+                            "IpProtocol": "tcp",
+                            "FromPort": "80",
+                            "ToPort": "80",
+                            "CidrIp": {
+                                "Fn::Join": [
+                                    "",
+                                    [
+                                        {
+                                            "Fn::ImportValue": {
+                                                "Fn::Sub": "${VPCStackName}-PublicSubnet1"
+                                            }
+                                        },
+                                        ", ",
+                                        {
+                                            "Fn::ImportValue": {
+                                                "Fn::Sub": "${VPCStackName}-PublicSubnet2"
+                                            }
+                                        }
+                                    ]
+                                ]
+                            }
+                        },
+                        {
+                            "IpProtocol": "tcp",
+                            "FromPort": "22",
+                            "ToPort": "22",
+                            "CidrIp": {
+                                "Fn::Join": [
+                                    "",
+                                    [
+                                        {
+                                            "Fn::ImportValue": {
+                                                "Fn::Sub": "${VPCStackName}-PublicSubnet1"
+                                            }
+                                        },
+                                        ", ",
+                                        {
+                                            "Fn::ImportValue": {
+                                                "Fn::Sub": "${VPCStackName}-PublicSubnet2"
+                                            }
+                                        }
+                                    ]
+                                ]
+                            }
+                        }
+                    ],
+                    "SecurityGroupEgress": [
+                        {
+                            "IpProtocol": "-1",
+                            "CidrIp": "0.0.0.0/0"
+                        }
+                    ]
+                }
+            }
+        },
+        "ELBSecurityGroup": {
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {
+                "GroupDescription": "Access to ELB",
+                "VpcId": {
+                    "Fn::ImportValue": {
+                        "Fn::Sub": "${VPCStackName}-VPCID"
+                    },
+                    "Tags": [
+                        {
+                            "Key": "Name",
+                            "Value": "TicketService"
+                        },
+                        {
+                            "Key": "Owner",
+                            "Value": {
+                                "Ref": "Owner"
+                            }
+                        },
+                        {
+                            "Key": "Project",
+                            "Value": {
+                                "Ref": "Project"
+                            }
+                        },
+                        {
+                            "Key": "DeleteAfter",
+                            "Value": {
+                                "Ref": "DeleteAfter"
+                            }
+                        }
+                    ],
+                    "SecurityGroupIngress": [
+                        {
+                            "IpProtocol": "tcp",
+                            "FromPort": "80",
+                            "ToPort": "80",
+                            "CidrIp": "0.0.0.0/0"
+                        }
+                    ],
+                    "SecurityGroupEgress": [
+                        {
+                            "IpProtocol": "-1",
+                            "CidrIp": "0.0.0.0/0"
+                        }
+                    ]
+                }
+            }
+        },
+        "Application": {
+            "Type": "AWS::ElasticBeanstalk::Application",
+            "Properties": {
+                "Description": "TicketService AWS Elastic Beanstalk Application",
+                "ApplicationName": {
+                    "Ref": "ApplicationName"
+                }
+            }
+        },
+        "ApplicationVersion": {
+            "Type": "AWS::ElasticBeanstalk::ApplicationVersion",
+            "Properties": {
+                "ApplicationName": {
+                    "Ref": "ApplicationName"
+                },
+                "Description": "TicketService AWS Elastic Beanstalk Application Version",
+                "SourceBundle": {
+                    "S3Bucket": {
+                        "Ref": "S3Bucket"
+                    },
+                    "S3Key": {
+                        "Ref": "S3Key"
+                    }
+                }
+            }
+        },
+        "ConfigurationTemplate": {
+            "Type": "AWS::ElasticBeanstalk::ConfigurationTemplate",
+            "Properties": {
+                "ApplicationName": {
+                    "Ref": "ApplicationName"
+                },
+                "Description": "TicketService AWS Elastic Beanstalk Application Configuration Template",
+                "OptionSettings": [
+                    {
+                        "Namespace": "aws:autoscaling:asg",
+                        "OptionName": "Availability Zones",
+                        "Value": "Any 2"
+                    },
+                    {
+                        "Namespace": "aws:autoscaling:asg",
+                        "OptionName": "MaxSize",
+                        "Value": "2"
+                    },
+                    {
+                        "Namespace": "aws:autoscaling:asg",
+                        "OptionName": "MinSize",
+                        "Value": "1"
+                    },
+                    {
+                        "Namespace": "aws:autoscaling:launchconfiguration",
+                        "OptionName": "EC2KeyName",
+                        "Value": {
+                            "Ref": "EC2KeyName"
+                        }
+                    },
+                    {
+                        "Namespace": "aws:autoscaling:launchconfiguration",
+                        "OptionName": "IamInstanceProfile",
+                        "Value": {
+                            "Ref": "EBInstanceProfile"
+                        }
+                    },
+                    {
+                        "Namespace": "aws:autoscaling:launchconfiguration",
+                        "OptionName": "InstanceType",
+                        "Value": "t2.small"
+                    },
+                    {
+                        "Namespace": "aws:autoscaling:launchconfiguration",
+                        "OptionName": "SecurityGroups",
+                        "Value": {
+                            "Ref": "InstanceSecurityGroup"
+                        }
+                    },
+                    {
+                        "Namespace": "aws:ec2:vpc",
+                        "OptionName": "ELBScheme",
+                        "Value": "public"
+                    },
+                    {
+                        "Namespace": "aws:ec2:vpc",
+                        "OptionName": "ELBSubnets",
+                        "Value": {
+                            "Fn::Join": [
+                                "",
+                                [
+                                    {
+                                        "Fn::ImportValue": {
+                                            "Fn::Sub": "${VPCStackName}-PublicSubnet1"
+                                        }
+                                    },
+                                    ", ",
+                                    {
+                                        "Fn::ImportValue": {
+                                            "Fn::Sub": "${VPCStackName}-PublicSubnet2"
+                                        }
+                                    }
+                                ]
+                            ]
+                        }
+                    },
+                    {
+                        "Namespace": "aws:ec2:vpc",
+                        "OptionName": "Subnets",
+                        "Value": {
+                            "Fn::Join": [
+                                "",
+                                [
+                                    {
+                                        "Fn::ImportValue": {
+                                            "Fn::Sub": "${VPCStackName}-PrivateSubnet1"
+                                        }
+                                    },
+                                    ", ",
+                                    {
+                                        "Fn::ImportValue": {
+                                            "Fn::Sub": "${VPCStackName}-PrivateSubnet2"
+                                        }
+                                    }
+                                ]
+                            ]
+                        }
+                    },
+                    {
+                        "Namespace": "aws:ec2:vpc",
+                        "OptionName": "VPCId",
+                        "Value": {
+                            "Fn::ImportValue": {
+                                "Fn::Sub": "${VPCStackName}-VPCID"
+                            }
+                        }
+                    },
+                    {
+                        "Namespace": "aws:elasticbeanstalk:command",
+                        "OptionName": "Timeout",
+                        "Value": "3600"
+                    },
+                    {
+                        "Namespace": "aws:elasticbeanstalk:environment",
+                        "OptionName": "LoadBalancerType",
+                        "Value": "application"
+                    },
+                    {
+                        "OptionName": "HealthCheckPath",
+                        "ResourceName": "AWSEBV2LoadBalancerTargetGroup",
+                        "Namespace": "aws:elasticbeanstalk:environment:process:default",
+                        "Value": "/"
+                    },
+                    {
+                        "OptionName": "MatcherHTTPCode",
+                        "ResourceName": "AWSEBV2LoadBalancerTargetGroup",
+                        "Namespace": "aws:elasticbeanstalk:environment:process:default"
+                    },
+                    {
+                        "OptionName": "Port",
+                        "ResourceName": "AWSEBV2LoadBalancerTargetGroup",
+                        "Namespace": "aws:elasticbeanstalk:environment:process:default",
+                        "Value": "80"
+                    },
+                    {
+                        "OptionName": "Protocol",
+                        "ResourceName": "AWSEBV2LoadBalancerTargetGroup",
+                        "Namespace": "aws:elasticbeanstalk:environment:process:default",
+                        "Value": "HTTP"
+                    },
+                    {
+                        "OptionName": "HealthCheckPath",
+                        "ResourceName": "hold",
+                        "Namespace": "aws:elasticbeanstalk:environment:process:hold",
+                        "Value": "/hold"
+                    },
+                    {
+                        "OptionName": "MatcherHTTPCode",
+                        "ResourceName": "hold",
+                        "Namespace": "aws:elasticbeanstalk:environment:process:hold",
+                        "Value": "200"
+                    },
+                    {
+                        "OptionName": "Port",
+                        "ResourceName": "hold",
+                        "Namespace": "aws:elasticbeanstalk:environment:process:hold",
+                        "Value": "80"
+                    },
+                    {
+                        "OptionName": "Protocol",
+                        "ResourceName": "hold",
+                        "Namespace": "aws:elasticbeanstalk:environment:process:hold",
+                        "Value": "HTTP"
+                    },
+                    {
+                        "OptionName": "HealthCheckPath",
+                        "ResourceName": "reserve",
+                        "Namespace": "aws:elasticbeanstalk:environment:process:reserve",
+                        "Value": "/reserve"
+                    },
+                    {
+                        "OptionName": "MatcherHTTPCode",
+                        "ResourceName": "reserve",
+                        "Namespace": "aws:elasticbeanstalk:environment:process:reserve",
+                        "Value": "200"
+                    },
+                    {
+                        "OptionName": "Port",
+                        "ResourceName": "reserve",
+                        "Namespace": "aws:elasticbeanstalk:environment:process:reserve",
+                        "Value": "80"
+                    },
+                    {
+                        "OptionName": "Protocol",
+                        "ResourceName": "reserve",
+                        "Namespace": "aws:elasticbeanstalk:environment:process:reserve",
+                        "Value": "HTTP"
+                    },
+                    {
+                        "OptionName": "HealthCheckPath",
+                        "ResourceName": "seats",
+                        "Namespace": "aws:elasticbeanstalk:environment:process:seats",
+                        "Value": "/seats"
+                    },
+                    {
+                        "OptionName": "MatcherHTTPCode",
+                        "ResourceName": "seats",
+                        "Namespace": "aws:elasticbeanstalk:environment:process:seats",
+                        "Value": "200"
+                    },
+                    {
+                        "OptionName": "Port",
+                        "ResourceName": "seats",
+                        "Namespace": "aws:elasticbeanstalk:environment:process:seats",
+                        "Value": "80"
+                    },
+                    {
+                        "OptionName": "Protocol",
+                        "ResourceName": "seats",
+                        "Namespace": "aws:elasticbeanstalk:environment:process:seats",
+                        "Value": "HTTP"
+                    },
+                    {
+                        "OptionName": "DefaultProcess",
+                        "ResourceName": "AWSEBV2LoadBalancerListener",
+                        "Namespace": "aws:elbv2:listener:default",
+                        "Value": "default"
+                    },
+                    {
+                        "OptionName": "ListenerEnabled",
+                        "ResourceName": "AWSEBV2LoadBalancerListener",
+                        "Namespace": "aws:elbv2:listener:default",
+                        "Value": "true"
+                    },
+                    {
+                        "OptionName": "Protocol",
+                        "ResourceName": "AWSEBV2LoadBalancerListener",
+                        "Namespace": "aws:elbv2:listener:default",
+                        "Value": "HTTP"
+                    },
+                    {
+                        "OptionName": "Rules",
+                        "ResourceName": "AWSEBV2LoadBalancerListener",
+                        "Namespace": "aws:elbv2:listener:default",
+                        "Value": "reserve,seats,hold"
+                    },
+                    {
+                        "OptionName": "PathPatterns",
+                        "ResourceName": ":default",
+                        "Namespace": "aws:elbv2:listenerrule:hold",
+                        "Value": "/hold"
+                    },
+                    {
+                        "OptionName": "Priority",
+                        "ResourceName": ":default",
+                        "Namespace": "aws:elbv2:listenerrule:hold",
+                        "Value": "2"
+                    },
+                    {
+                        "OptionName": "Process",
+                        "ResourceName": ":default",
+                        "Namespace": "aws:elbv2:listenerrule:hold",
+                        "Value": "hold"
+                    },
+                    {
+                        "OptionName": "PathPatterns",
+                        "ResourceName": ":default",
+                        "Namespace": "aws:elbv2:listenerrule:reserve",
+                        "Value": "/reserve"
+                    },
+                    {
+                        "OptionName": "Priority",
+                        "ResourceName": ":default",
+                        "Namespace": "aws:elbv2:listenerrule:reserve",
+                        "Value": "3"
+                    },
+                    {
+                        "OptionName": "Process",
+                        "ResourceName": ":default",
+                        "Namespace": "aws:elbv2:listenerrule:reserve",
+                        "Value": "reserve"
+                    },
+                    {
+                        "OptionName": "PathPatterns",
+                        "ResourceName": ":default",
+                        "Namespace": "aws:elbv2:listenerrule:seats",
+                        "Value": "/seats"
+                    },
+                    {
+                        "OptionName": "Priority",
+                        "ResourceName": ":default",
+                        "Namespace": "aws:elbv2:listenerrule:seats",
+                        "Value": "1"
+                    },
+                    {
+                        "OptionName": "Process",
+                        "ResourceName": ":default",
+                        "Namespace": "aws:elbv2:listenerrule:seats",
+                        "Value": "seats"
+                    }
+                ],
+                "SolutionStackName": {
+                    "Ref": "SolutionStackName"
+                }
+            }
+        },
+        "Environment": {
+            "Type": "AWS::ElasticBeanstalk::Environment",
+            "DependsOn": [
+                "ConfigurationTemplate"
+            ],
+            "Properties": {
+                "ApplicationName": {
+                    "Ref": "ApplicationName"
+                },
+                "Description": "AWS ElasticBeanstalk  Environment",
+                "CNAMEPrefix": {
+                    "Ref": "EnvironmentName"
+                },
+                "EnvironmentName": {
+                    "Ref": "EnvironmentName"
+                },
+                "TemplateName": {
+                    "Ref": "ConfigurationTemplate"
+                },
+                "VersionLabel": {
+                    "Ref": "ApplicationVersion"
+                },
+                "OptionSettings": [
+                    {
+                        "Namespace": "aws:elasticbeanstalk:application:environment",
+                        "OptionName": "REST_ENDPOINT",
+                        "Value": "http://api.ticketservice.com:80"
+                    }
+                ]
+            }
+        },
+        "R53HostedZone": {
+            "Type": "AWS::Route53::HostedZone",
+            "Properties": {
+                "HostedZoneConfig": {
+                    "Comment": "My hosted zone for ticketservice.com"
+                },
+                "Name": {
+                    "Ref": "R53HostedZoneName"
+                },
+                "VPCs": [
+                    {
+                        "VPCId": {
+                            "Fn::ImportValue": {
+                                "Fn::Sub": "${VPCStackName}-VPCID"
+                            }
+                        },
+                        "VPCRegion": {
+                            "Ref": "AWS::Region"
+                        }
+                    }
+                ],
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "TicketService"
+                    },
+                    {
+                        "Key": "Owner",
+                        "Value": {
+                            "Ref": "Owner"
+                        }
+                    },
+                    {
+                        "Key": "Project",
+                        "Value": {
+                            "Ref": "Project"
+                        }
+                    },
+                    {
+                        "Key": "DeleteAfter",
+                        "Value": {
+                            "Ref": "DeleteAfter"
+                        }
+                    }
+                ]
+            }
+        },
+        "R53RecordSet": {
+            "Type": "AWS::Route53::RecordSet",
+            "Properties": {
+                "AliasTarget": {
+                    "DNSName": {
+                        "Fn::GetAtt": [
+                            "Environment",
+                            "EndpointURL"
+                        ]
+                    },
+                    "HostedZoneId": {
+                        "Fn::FindInMap": [
+                            "BeanstalkToALBHostedZoneId",
+                            {
+                                "Ref": "AWS::Region"
+                            },
+                            "HostedZoneId"
+                        ]
+                    }
+                },
+                "HostedZoneId": {
+                    "Ref": "R53HostedZone"
+                },
+                "Name": {
+                    "Ref": "R53RecordSetName"
+                },
+                "Type": "A"
+            }
+        }
+    },
+    "Outputs": {
+        "AppURL": {
+            "Value": {
+                "Fn::Join": [
+                    "",
+                    [
+                        "https://",
+                        {
+                            "Fn::GetAtt": [
+                                "Environment",
+                                "EndpointURL"
+                            ]
+                        },
+                        "/"
+                    ]
+                ]
+            },
+            "Description": "URL for the working  application"
+        },
+        "Application": {
+            "Value": {
+                "Ref": "ApplicationName"
+            }
+        },
+        "ConfigurationTemplate": {
+            "Value": {
+                "Ref": "ConfigurationTemplate"
+            },
+            "Description": "The Elastic Beanstalk configuration"
+        },
+        "Environment": {
+            "Value": {
+                "Ref": "Environment"
+            },
+            "Description": "The Elastic Beanstalk environment on which the application runs"
+        }
+    },
+    "Metadata": {
+        "AWS::CloudFormation::Interface": {
+            "ParameterGroups": [
+                {
+                    "Label": {
+                        "default": "Ownership"
+                    },
+                    "Parameters": [
+                        "Owner",
+                        "Project",
+                        "DeleteAfter"
+                    ]
+                },
+                {
+                    "Label": {
+                        "default": "Application Configurations"
+                    },
+                    "Parameters": [
+                        "CreateApplication",
+                        "ApplicationName",
+                        "EnvironmentName",
+                        "SolutionStackName",
+                        "S3Bucket",
+                        "S3Key"
+                    ]
+                },
+                {
+                    "Label": {
+                        "default": "Instance & ELB Parameters"
+                    },
+                    "Parameters": [
+                        "EC2KeyName"
+                    ]
+                },
+                {
+                    "Label": {
+                        "default": "Route53 Parameters"
+                    },
+                    "Parameters": [
+                        "R53HostedZoneName",
+                        "R53RecordSetName"
+                    ]
+                },
+                {
+                    "Label": {
+                        "default": "Other Stack References"
+                    },
+                    "Parameters": [
+                        "VPCStackName"
+                    ]
+                }
+            ],
+            "ParameterLabels": {
+                "Owner": {
+                    "default": "Team or Individual Owner"
+                },
+                "DeleteAfter": {
+                    "default": "Delete After Date"
+                },
+                "ApplicationName": {
+                    "default": "Application"
+                },
+                "EnvironmentName": {
+                    "default": "Environment"
+                },
+                "SolutionStackName": {
+                    "default": "Solution Stack"
+                },
+                "EC2KeyName": {
+                    "default": "EC2 Key Pair"
+                },
+                "VPCStackName": {
+                    "default": "VPC Stack Name"
+                },
+                "IAMInstanceProfile": {
+                    "default": "IAM Instance Profile"
+                },
+                "R53HostedZoneName": {
+                    "default": "R53 Hosted Zone"
+                },
+                "R53RecordSetName": {
+                    "default": "R53 Record Set"
+                },
+
+            }
+        }
+    }
+}
