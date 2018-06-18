@@ -1,0 +1,50 @@
+[
+  {
+    "ParameterKey": "Owner",
+    "ParameterValue": "Dan Ghadge"
+  },
+  {
+    "ParameterKey": "Project",
+    "ParameterValue": "PIQ Development"
+  },
+  {
+    "ParameterKey": "DeleteAfter",
+    "ParameterValue": "Never"
+  },
+  {
+    "ParameterKey": "ApplicationName",
+    "ParameterValue": "TicketService"
+  },
+  {
+    "ParameterKey": "EnvironmentName",
+    "ParameterValue": "ts-env-green"
+  },
+  {
+    "ParameterKey": "SolutionStackName",
+    "ParameterValue": "64bit Amazon Linux 2018.03 v2.7.1 running Java 8"
+  },
+  {
+    "ParameterKey": "S3Bucket",
+    "ParameterValue": "dgtestohio"
+  },
+  {
+    "ParameterKey": "S3Key",
+    "ParameterValue": "ticketingservice-1.0.1-RELEASE.jar"
+  },
+  {
+    "ParameterKey": "EC2KeyName",
+    "ParameterValue": "dghadge"
+  },
+  {
+    "ParameterKey": "R53HostedZoneName",
+    "ParameterValue": "ticketservice.com"
+  },
+  {
+    "ParameterKey": "R53RecordSetName",
+    "ParameterValue": "api.ticketservice.com"
+  },
+  {
+    "ParameterKey": "VPCStackName",
+    "ParameterValue": "ts-vpc2"
+  }
+]
