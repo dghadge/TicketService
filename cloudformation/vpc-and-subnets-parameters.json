@@ -13,7 +13,7 @@
     },
     {
         "ParameterKey": "VPCSubnetCidrBlock",
-        "ParameterValue": "10.16.40.0/21"
+        "ParameterValue": "172.16.40.0/21"
     },
     {
         "ParameterKey": "AvailabilityZone1",
@@ -25,26 +25,26 @@
     },
     {
         "ParameterKey": "PublicSubnetCidrBlock1",
-        "ParameterValue": "10.16.41.0/24"
+        "ParameterValue": "172.16.41.0/24"
     },
     {
         "ParameterKey": "PublicSubnetCidrBlock2",
-        "ParameterValue": "10.16.42.0/24"
+        "ParameterValue": "172.16.42.0/24"
     },
     {
         "ParameterKey": "PrivateSubnetCidrBlock1",
-        "ParameterValue": "10.16.43.0/24"
+        "ParameterValue": "172.16.43.0/24"
     },
     {
         "ParameterKey": "PrivateSubnetCidrBlock2",
-        "ParameterValue": "10.16.44.0/24"
+        "ParameterValue": "172.16.44.0/24"
     },
     {
         "ParameterKey": "PrivateSubnetCidrBlock3",
-        "ParameterValue": "10.16.45.0/24"
+        "ParameterValue": "172.16.45.0/24"
     },
     {
         "ParameterKey": "PrivateSubnetCidrBlock4",
-        "ParameterValue": "10.16.46.0/24"
+        "ParameterValue": "172.16.46.0/24"
     }
 ]

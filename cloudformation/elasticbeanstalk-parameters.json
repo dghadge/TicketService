@@ -13,11 +13,11 @@
   },
   {
     "ParameterKey": "ApplicationName",
-    "ParameterValue": "TicketService"
+    "ParameterValue": "TService"
   },
   {
     "ParameterKey": "EnvironmentName",
-    "ParameterValue": "ts-env-green"
+    "ParameterValue": "TService-env-green"
   },
   {
     "ParameterKey": "SolutionStackName",
@@ -29,7 +29,7 @@
   },
   {
     "ParameterKey": "S3Key",
-    "ParameterValue": "ticketingservice-V1.zip"
+    "ParameterValue": "ticketservice-V1.zip"
   },
   {
     "ParameterKey": "EC2KeyName",
@@ -45,6 +45,6 @@
   },
   {
     "ParameterKey": "VPCStackName",
-    "ParameterValue": "ts-vpc"
+    "ParameterValue": "ticketservice-vpc"
   }
 ]
