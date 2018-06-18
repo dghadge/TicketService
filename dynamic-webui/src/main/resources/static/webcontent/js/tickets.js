@@ -1,5 +1,5 @@
+var restEndPoint = "http://api.ticketservice.com:80";
 var myApp = angular.module('ticketservice', []);
-var restEndPoint = "http://awseb-AWSEB-R8FLUO92OZ4H-89552945.us-east-2.elb.amazonaws.com:80"
 myApp.controller('ticketsController', function ($scope, $http) {
 
     $scope.holdSeats = function () {
