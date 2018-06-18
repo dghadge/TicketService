@@ -29,7 +29,7 @@
   },
   {
     "ParameterKey": "S3Key",
-    "ParameterValue": "ticketingservice-1.0.1-RELEASE.jar"
+    "ParameterValue": "ticketingservice-V1.zip"
   },
   {
     "ParameterKey": "EC2KeyName",
@@ -45,6 +45,6 @@
   },
   {
     "ParameterKey": "VPCStackName",
-    "ParameterValue": "ts-vpc2"
+    "ParameterValue": "ts-vpc"
   }
 ]
