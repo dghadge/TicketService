@@ -159,86 +159,80 @@
                 "VpcId": {
                     "Fn::ImportValue": {
                         "Fn::Sub": "${VPCStackName}-VPCID"
+                    }
+                },
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "TicketService"
                     },
-                    "Tags": [
-                        {
-                            "Key": "Name",
-                            "Value": "TicketService"
-                        },
-                        {
-                            "Key": "Owner",
-                            "Value": {
-                                "Ref": "Owner"
-                            }
-                        },
-                        {
-                            "Key": "Project",
-                            "Value": {
-                                "Ref": "Project"
-                            }
-                        },
-                        {
-                            "Key": "DeleteAfter",
-                            "Value": {
-                                "Ref": "DeleteAfter"
+                    {
+                        "Key": "Owner",
+                        "Value": {
+                            "Ref": "Owner"
+                        }
+                    },
+                    {
+                        "Key": "Project",
+                        "Value": {
+                            "Ref": "Project"
+                        }
+                    },
+                    {
+                        "Key": "DeleteAfter",
+                        "Value": {
+                            "Ref": "DeleteAfter"
+                        }
+                    }
+                ],
+                "SecurityGroupIngress": [
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "80",
+                        "ToPort": "80",
+                        "CidrIp": {
+                            "Fn::ImportValue": {
+                                "Fn::Sub": "${VPCStackName}-PublicSubnetCidr1"
                             }
                         }
-                    ],
-                    "SecurityGroupIngress": [
-                        {
-                            "IpProtocol": "tcp",
-                            "FromPort": "80",
-                            "ToPort": "80",
-                            "CidrIp": {
-                                "Fn::Join": [
-                                    "",
-                                    [
-                                        {
-                                            "Fn::ImportValue": {
-                                                "Fn::Sub": "${VPCStackName}-PublicSubnet1"
-                                            }
-                                        },
-                                        ", ",
-                                        {
-                                            "Fn::ImportValue": {
-                                                "Fn::Sub": "${VPCStackName}-PublicSubnet2"
-                                            }
-                                        }
-                                    ]
-                                ]
-                            }
-                        },
-                        {
-                            "IpProtocol": "tcp",
-                            "FromPort": "22",
-                            "ToPort": "22",
-                            "CidrIp": {
-                                "Fn::Join": [
-                                    "",
-                                    [
-                                        {
-                                            "Fn::ImportValue": {
-                                                "Fn::Sub": "${VPCStackName}-PublicSubnet1"
-                                            }
-                                        },
-                                        ", ",
-                                        {
-                                            "Fn::ImportValue": {
-                                                "Fn::Sub": "${VPCStackName}-PublicSubnet2"
-                                            }
-                                        }
-                                    ]
-                                ]
+                    },
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "80",
+                        "ToPort": "80",
+                        "CidrIp": {
+                            "Fn::ImportValue": {
+                                "Fn::Sub": "${VPCStackName}-PublicSubnetCidr2"
                             }
                         }
-                    ],
-                    "SecurityGroupEgress": [
-                        {
-                            "IpProtocol": "-1",
-                            "CidrIp": "0.0.0.0/0"
+                    },
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "22",
+                        "ToPort": "22",
+                        "CidrIp": {
+                            "Fn::ImportValue": {
+                                "Fn::Sub": "${VPCStackName}-PublicSubnetCidr1"
+                            }
                         }
-                    ]
-                }
+                    },
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "22",
+                        "ToPort": "22",
+                        "CidrIp": {
+                            "Fn::ImportValue": {
+                                "Fn::Sub": "${VPCStackName}-PublicSubnetCidr2"
+                            }
+                        }
+                    }
+                ],
+                "SecurityGroupEgress": [
+                    {
+                        "IpProtocol": "-1",
+                        "CidrIp": "0.0.0.0/0"
+                    }
+                ]
             }
         },
         "ELBSecurityGroup": {
@@ -248,46 +242,46 @@
                 "VpcId": {
                     "Fn::ImportValue": {
                         "Fn::Sub": "${VPCStackName}-VPCID"
+                    }
+                },
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "TicketService"
                     },
-                    "Tags": [
-                        {
-                            "Key": "Name",
-                            "Value": "TicketService"
-                        },
-                        {
-                            "Key": "Owner",
-                            "Value": {
-                                "Ref": "Owner"
-                            }
-                        },
-                        {
-                            "Key": "Project",
-                            "Value": {
-                                "Ref": "Project"
-                            }
-                        },
-                        {
-                            "Key": "DeleteAfter",
-                            "Value": {
-                                "Ref": "DeleteAfter"
-                            }
+                    {
+                        "Key": "Owner",
+                        "Value": {
+                            "Ref": "Owner"
                         }
-                    ],
-                    "SecurityGroupIngress": [
-                        {
-                            "IpProtocol": "tcp",
-                            "FromPort": "80",
-                            "ToPort": "80",
-                            "CidrIp": "0.0.0.0/0"
+                    },
+                    {
+                        "Key": "Project",
+                        "Value": {
+                            "Ref": "Project"
                         }
-                    ],
-                    "SecurityGroupEgress": [
-                        {
-                            "IpProtocol": "-1",
-                            "CidrIp": "0.0.0.0/0"
+                    },
+                    {
+                        "Key": "DeleteAfter",
+                        "Value": {
+                            "Ref": "DeleteAfter"
                         }
-                    ]
-                }
+                    }
+                ],
+                "SecurityGroupIngress": [
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "80",
+                        "ToPort": "80",
+                        "CidrIp": "0.0.0.0/0"
+                    }
+                ],
+                "SecurityGroupEgress": [
+                    {
+                        "IpProtocol": "-1",
+                        "CidrIp": "0.0.0.0/0"
+                    }
+                ]
             }
         },
         "Application": {
@@ -301,6 +295,7 @@
         },
         "ApplicationVersion": {
             "Type": "AWS::ElasticBeanstalk::ApplicationVersion",
+            "DependsOn": "Application",
             "Properties": {
                 "ApplicationName": {
                     "Ref": "ApplicationName"
@@ -442,7 +437,8 @@
                     {
                         "OptionName": "MatcherHTTPCode",
                         "ResourceName": "AWSEBV2LoadBalancerTargetGroup",
-                        "Namespace": "aws:elasticbeanstalk:environment:process:default"
+                        "Namespace": "aws:elasticbeanstalk:environment:process:default",
+                        "Value": "200"
                     },
                     {
                         "OptionName": "Port",
@@ -663,30 +659,6 @@
                             "Ref": "AWS::Region"
                         }
                     }
-                ],
-                "Tags": [
-                    {
-                        "Key": "Name",
-                        "Value": "TicketService"
-                    },
-                    {
-                        "Key": "Owner",
-                        "Value": {
-                            "Ref": "Owner"
-                        }
-                    },
-                    {
-                        "Key": "Project",
-                        "Value": {
-                            "Ref": "Project"
-                        }
-                    },
-                    {
-                        "Key": "DeleteAfter",
-                        "Value": {
-                            "Ref": "DeleteAfter"
-                        }
-                    }
                 ]
             }
         },
@@ -840,7 +812,6 @@
                 "R53RecordSetName": {
                     "default": "R53 Record Set"
                 },
-
             }
         }
     }
