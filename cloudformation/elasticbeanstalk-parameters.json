@@ -13,11 +13,11 @@
   },
   {
     "ParameterKey": "ApplicationName",
-    "ParameterValue": "TService"
+    "ParameterValue": "ticketservice"
   },
   {
     "ParameterKey": "EnvironmentName",
-    "ParameterValue": "TService-env-green"
+    "ParameterValue": "ticketservice-env-green"
   },
   {
     "ParameterKey": "SolutionStackName",
