@@ -1,4 +1,4 @@
-var restEndPoint = "http://api.ticketservice.com:80";
+var restEndPoint = "http://ticketservice-env-green.us-east-2.elasticbeanstalk.com:80";
 var myApp = angular.module('ticketservice', []);
 myApp.controller('ticketsController', function ($scope, $http) {
 
