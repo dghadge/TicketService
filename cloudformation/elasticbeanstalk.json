@@ -327,12 +327,17 @@
                     {
                         "Namespace": "aws:autoscaling:asg",
                         "OptionName": "MaxSize",
-                        "Value": "2"
+                        "Value": "1"
                     },
                     {
                         "Namespace": "aws:autoscaling:asg",
                         "OptionName": "MinSize",
                         "Value": "1"
+                    },
+                    {
+                        "Namespace": "aws:autoscaling:asg",
+                        "OptionName": "Cooldown",
+                        "Value": "180"
                     },
                     {
                         "Namespace": "aws:autoscaling:launchconfiguration",
