@@ -29,6 +29,8 @@
      1. git clone https://github.com/dghadge/ticketservice.git
      2. mvn package 
      3. mvn spring-boot:run  (this command will start the application)
+     4. Alternate to setp-3 above; you can run bash script "service.sh" 
+        which will start both app and web on ports 5000 and 5001 resp.
      
      NOTE : if jnuit fails after multiple re-runs, its because there are no more avaibale seats. 
      Running the following command will recreate new seats in the DB. 
