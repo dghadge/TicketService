@@ -1,7 +1,5 @@
 ###  Ticket Service : A neat application to find and reserve hard to get tickets
 
---TEST--
-
 ###  Technical Components
      Backend   : Spring Boot
      Database  : H2 (using file based option to persist data between app re-runs)
